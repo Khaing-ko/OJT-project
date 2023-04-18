@@ -1,0 +1,38 @@
+<h2>Add New Supplier</h2>
+<form [formGroup]="supplierAdd" (ngSubmit)="submitSupplier()" #formDir="ngForm">
+    <div>
+        <label for="SupplierName">Supplier Name:</label>
+        <input class="form-control" placeholder="hero name" formControlName="SupplierName" />
+        <div
+            *ngIf="
+                supplierAdd.get('SupplierName').invalid && supplierAdd.get('SupplierName').errors.required
+            "
+        >
+            Supplier Name is required.
+        </div>
+        <div
+            *ngIf="
+                supplierAdd.get('SupplierName').invalid && supplierAdd.get('SupplierName').errors.maxlength
+            "
+        >
+            Supplier Name must be maximum 20 characters long.
+        </div>
+        <div
+            *ngIf="
+                supplierAdd.get('SupplierName').invalid && supplierAdd.get('SupplierName').errors.minlength
+            "
+        >
+            Supplier Name must be minimum 5 characters long.
+        </div>
+
+        <br />
+        <label for="SupplierAddress">Supplier Address:</label>
+        <input class="form-control" placeholder="address" formControlName="SupplierAddress" />
+        <br />
+        <label for="SupplierTypeId">SupplierTypeId: </label>
+        <input class="form-control" placeholder="SupplierTypeId" formControlName="SupplierTypeId" />
+    </div>
+    <br />
+    <button type="button" (click)="goBack()">go back</button> &nbsp;&nbsp;
+    <button type="button" (click)="submitSupplier()">Submit</button>
+</form>

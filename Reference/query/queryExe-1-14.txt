@@ -1,0 +1,117 @@
+SELECT CONCAT(first_name,' ',last_name) AS employee_name,city,country_region
+FROM employees;
+// exe1
+
+
+SELECT id,CONCAT(first_name,' ',last_name) AS employee_name
+FROM employees
+WHERE city = 'Seattle';
+//exe2
+
+
+SELECT product_name AS Item,list_price AS Amount
+FROM products AS p
+WHERE p.id = ANY ( SELECT product_id FROM order_details);
+//exe3
+
+
+SELECT o.id,o.order_date,o.ship_name,SUM(od.quantity * od.unit_price) AS amount
+FROM orders AS o 
+INNER JOIN order_details AS od
+ON o.id = od.order_id
+group by o.id,o.order_date,o.ship_name
+ORDER BY o.order_date;
+//exe4
+
+
+SELECT o.id,o.order_date,o.ship_name, (SELECT SUM(od.quantity * od.unit_price) 
+									    FROM order_details AS od
+									    WHERE o.id = od.order_id
+                                        ) AS Amount
+FROM orders AS o
+ORDER BY o.order_date;
+//exe5
+
+
+SELECT e.id,CONCAT(e.first_name,'  ',e.last_name) AS employeeName
+FROM employees AS e
+INNER JOIN orders AS o
+ON e.id = o.employee_id
+WHERE o.ship_city = 'New York'
+GROUP BY e.id,e.first_name,e.last_name
+ORDER BY e.id;
+//exe6
+
+
+SELECT o.order_date,CONCAT(e.first_name,' ',e.last_name) AS EmployeeName,CONCAT(c.first_name,' ',c.last_name) AS CustomerName
+FROM orders AS o 
+INNER JOIN employees AS e
+ON o.employee_id = e.id
+INNER JOIN customers AS  c
+ON  o.customer_id = c.id
+INNER JOIN shippers AS  s
+ON  o.shipper_id = s.id
+WHERE  s.company = 'Shipping Company A' AND c.city = 'New York';
+//exe7
+
+
+SELECT e.id,CONCAT(e.first_name,' ',e.last_name) AS EmployeeName
+FROM employees AS e 
+INNER JOIN orders AS o
+ON e.id = o.employee_id
+INNER JOIN order_details AS od
+ON o.id = od.order_id
+INNER JOIN products AS p
+ON od.product_id = p.id
+WHERE p.product_code IN ('NWTB-81', 'NWTC-82')
+GROUP BY e.id,e.first_name,e.last_name
+ORDER BY e.id;
+//exe8
+
+
+SELECT id,order_date
+FROM orders
+WHERE order_date BETWEEN '2006-01-01' AND '2006-01-31';
+//exe9
+
+
+SELECT c.id,CONCAT(c.first_name,' ',c.last_name) AS CustomerName, COUNT(*) AS NumberOfOrders
+FROM customers AS c
+JOIN orders AS o
+ON c.id = o.customer_id
+GROUP BY c.id,c.first_name,c.last_name;
+//exe10
+
+
+SELECT MONTH(order_date) AS Month ,COUNT(*) AS NumberOfOrder
+FROM orders
+GROUP BY MONTH(order_date);
+//exe11
+
+
+SELECT o.id AS OrderID,p.id AS ProductID,i.comments
+FROM orders AS o
+JOIN order_details AS od
+ON o.id =  od.order_id
+JOIN products AS p
+ON od.product_id = p.id
+JOIN inventory_transactions AS i
+ON p.id = i.product_id AND od.inventory_id = i.id
+ORDER BY o.id;
+//exe12
+
+
+SELECT c.id,CONCAT(c.first_name,' ',c.last_name) AS CustomerName, COUNT(*) AS NumberOfOrders
+FROM customers AS c
+INNER JOIN orders AS o
+ON c.id = o.customer_id
+GROUP BY c.id,c.first_name,c.last_name;
+//exe13 = exe10 ???
+
+
+SELECT c.id AS CustomerID, CONCAT(c.first_name,' ',c.last_name) AS CustomerName,COUNT(o.customer_id) AS NumberofOrders
+FROM customers AS c 
+LEFT JOIN orders AS o
+ON c.id = o.customer_id
+GROUP BY c.id,c.first_name,c.last_name;
+//exe14

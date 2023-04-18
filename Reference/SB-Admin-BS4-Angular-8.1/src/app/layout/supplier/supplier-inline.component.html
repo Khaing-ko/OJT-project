@@ -1,0 +1,84 @@
+<h2>My Suppliers In Line Editing</h2>
+
+<kendo-grid
+    [data]="suppliergrid | async"
+    [pageSize]="gridState.take"
+    [skip]="gridState.skip"
+    [sort]="gridState.sort"
+    [filter]="gridState.filter"
+    [sortable]="true"
+    [pageable]="true"
+    [resizable]="true"
+    [filterable]="true"
+    [height]="410"
+    (edit)="editHandler($event)"
+    (cancel)="cancelHandler($event)"
+    (save)="saveHandler($event)"
+    (remove)="removeHandler($event)"
+    (add)="addHandler($event)"
+    (dataStateChange)="onStateChange($event)"
+>
+    <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand>Add new</button>
+    </ng-template>
+    <kendo-grid-column field="SupplierId" title="ID" width="60" format="{0:n0}">
+        <ng-template kendoGridEditTemplate>
+            {{ supplierformGroup.value.SupplierId }}
+        </ng-template>
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+            <kendo-grid-numeric-filter-cell [column]="column" [filter]="filter"> </kendo-grid-numeric-filter-cell>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="SupplierName" title="Name" width="80"></kendo-grid-column>
+    <kendo-grid-column field="RegisterDate" title="RegisterDate" width="80" format="dd/MM/yyyy">
+        <ng-template kendoGridEditTemplate let-formGroup>
+            <kendo-datepicker [formControl]="formGroup.get('RegisterDate')" format="dd/MM/yyyy"></kendo-datepicker>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.RegisterDate | date : 'dd/MM/yyyy' }}
+        </ng-template>
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+            <kendo-grid-date-filter-cell [column]="column" [filter]="filter"> </kendo-grid-date-filter-cell>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="SupplierAddress" title="Address" width="100"></kendo-grid-column>
+    <kendo-grid-column field="SupplierTypeName" title="SupplierType" width="60">
+        <ng-template kendoGridEditTemplate let-formGroup>
+            <kendo-dropdownlist
+                [defaultItem]="{ SupplierTypeId: null, SupplierTypeName: '' }"
+                [data]="suppliertypes"
+                textField="SupplierTypeName"
+                valueField="SupplierTypeId"
+                [valuePrimitive]="true"
+                [formControl]="formGroup.get('SupplierTypeId')"
+            >
+            </kendo-dropdownlist>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-command-column title="command" width="220">
+        <ng-template kendoGridCellTemplate let-isNew="isNew">
+            <button kendoGridEditCommand [primary]="true">Edit</button>
+            <button kendoGridRemoveCommand>Remove</button>
+            <button kendoGridSaveCommand [disabled]="supplierformGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
+            <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+        </ng-template>
+    </kendo-grid-command-column>
+    <kendo-grid-command-column title="Upload File" width="220">
+        <ng-template>
+            <kendo-upload [saveUrl]="uploadSaveUrl" [removeUrl]="uploadRemoveUrl">
+            </kendo-upload>
+        </ng-template>
+    </kendo-grid-command-column>
+</kendo-grid>
+
+<div *ngIf="suppliergrid.gridLoading" class="k-i-loading"></div> 
+
+<kendo-dialog title="Please confirm" *ngIf="itemToRemove" (close)="confirmRemove(false)">
+    <p style="margin: 30px; text-align: center">
+        Are you sure you want to delete supplier {{ itemToRemove.SupplierName }}?
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="confirmRemove(false)">No</button>
+        <button class="k-button k-primary" (click)="confirmRemove(true)" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

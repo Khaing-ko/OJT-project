@@ -1,0 +1,65 @@
+SELECT id,CONCAT(first_name,' ',last_name) AS  CustomerName
+FROM customers
+WHERE job_title = 'Owner'  AND city = 'Seattle';
+//exe1
+
+
+SELECT o.id,o.order_date,CONCAT(c.first_name,' ',c.last_name) AS CustomerName
+FROM orders AS o
+JOIN customers AS c 
+ON o.customer_id = c.id
+WHERE c.city = 'Seattle' AND (o.order_date  BETWEEN '2006-03-01' AND '2006-03-31');
+//exe2
+
+
+SELECT ship_name,COUNT(*) AS NumberOfShip
+FROM orders
+GROUP BY ship_name;
+//exe3
+
+
+SELECT s.id AS CompanyID,s.company,COUNT(o.shipper_id) AS NumberOfOrders
+FROM shippers AS s
+LEFT JOIN orders AS o
+ON s.id = o.shipper_id
+GROUP BY s.id,s.company;
+//exe4
+
+
+SELECT p.id,p.product_name,SUM(od.quantity * od.unit_price) AS amount
+FROM products AS p
+INNER JOIN order_details AS od
+ON p.id = od.product_id
+INNER JOIN  orders AS o
+ON od.order_id =  o.id
+WHERE p.category = 'Beverages' AND (o.order_date BETWEEN '2006-03-01' AND '2006-03-31')
+GROUP BY p.id,p.product_name
+ORDER BY p.id;
+//exe5
+
+
+SELECT p.id, p.product_name, pq.purchaseQuantity - IFNULL( oq.orderQuantity,0) AS BalanceQuantity
+FROM (
+  SELECT pod.product_id, SUM(pod.quantity) AS purchaseQuantity
+  FROM purchase_order_details AS pod
+  GROUP BY pod.product_id
+) AS pq
+LEFT JOIN (
+  SELECT od.product_id, SUM(od.quantity) AS orderQuantity
+  FROM order_details AS od
+  GROUP BY od.product_id
+) AS oq ON pq.product_id = oq.product_id
+INNER JOIN products AS p ON pq.product_id = p.id
+ORDER BY p.id;
+//exe6
+
+
+SELECT c.id,CONCAT(c.first_name,' ',c.last_name) AS CustomerName,IFNULL(SUM(ordd.quantity * ordd.unit_price),0) AS total
+FROM customers AS c
+LEFT JOIN (SELECT * FROM orders AS o WHERE  o.order_date BETWEEN '2006-01-01' AND '2006-04-30') AS od
+ON c.id = od.customer_id
+LEFT JOIN order_details AS ordd
+ON od.id = ordd.order_id
+WHERE c.city = 'New York'
+GROUP BY c.id,c.first_name,c.last_name;
+//exe7

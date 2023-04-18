@@ -1,0 +1,100 @@
+<h2>Add New User</h2>
+<form [formGroup]="adminAdd" (ngSubmit)="submitAdmin($event)" #formDir="ngForm">
+    <div>
+        <label for="AdminLoginName">User Name:</label>
+        <input class="form-control" placeholder="User Name" formControlName="AdminLoginName" />
+        <div *ngIf="adminAdd.get('AdminLoginName').invalid && adminAdd.get('AdminLoginName').errors.required"
+        [ngClass]="{ 'error-message': adminAdd.get('AdminLoginName').touched }">
+            customer Name is required.
+        </div>
+        <div
+            *ngIf="adminAdd.get('AdminLoginName').invalid && adminAdd.get('AdminLoginName').errors.minlength"
+            [ngClass]="{ 'error-message': adminAdd.get('AdminLoginName').touched }"
+        >
+            Customer Name must be minimum 5 characters long.
+        </div>
+        <div *ngIf="adminAdd.get('AdminLoginName').invalid && adminAdd.get('AdminLoginName').errors.maxlength"
+        [ngClass]="{ 'error-message': adminAdd.get('AdminLoginName').touched }">
+            customer Name must be maximum 20 characters long.
+        </div>
+        <br />
+        <label for="adminPassword">Password:</label>
+        <input class="form-control" placeholder="Password" formControlName="adminPassword" />
+        <div *ngIf="adminAdd.get('adminPassword').invalid && adminAdd.get('adminPassword').errors.required"
+        [ngClass]="{ 'error-message': adminAdd.get('adminPassword').touched }">
+            Password is required.
+        </div>
+        <div
+            *ngIf="adminAdd.get('adminPassword').invalid && adminAdd.get('adminPassword').errors.minlength"
+            [ngClass]="{ 'error-message': adminAdd.get('adminPassword').touched }"
+        >
+            Password must be minimum 5 characters long.
+        </div>
+        <div *ngIf="adminAdd.get('adminPassword').invalid && adminAdd.get('adminPassword').errors.maxlength"
+        [ngClass]="{ 'error-message': adminAdd.get('adminPassword').touched }">
+            Password must be maximum 20 characters long.
+        </div>
+        <br />
+        <label for="Salt">Salt:</label>
+        <input class="form-control" placeholder="Salt" formControlName="Salt" />
+        <br />
+        <label for="AdminEmail">Email:</label>
+        <input class="form-control" placeholder="Email" formControlName="AdminEmail" />
+        <div *ngIf="adminAdd.get('AdminEmail').invalid && adminAdd.get('AdminEmail').errors.required"
+        [ngClass]="{ 'error-message': adminAdd.get('AdminEmail').touched }">
+            Email is required.
+        </div>
+        <div
+            *ngIf="adminAdd.get('AdminEmail').invalid && adminAdd.get('AdminEmail').errors.email"
+            [ngClass]="{ 'error-message': adminAdd.get('AdminEmail').touched }"
+        >
+            Invalid Email Address.
+        </div>
+        <br />
+        <label for="AdminName">Name:</label>
+        <input class="form-control" placeholder="Name" formControlName="AdminName" />
+        <div *ngIf="adminAdd.get('AdminName').invalid && adminAdd.get('AdminName').errors.required"
+        [ngClass]="{ 'error-message': adminAdd.get('AdminName').touched }">
+            Name is required.
+        </div>
+        <br />
+        <label for="AdminAddress">Address:</label>
+        <input class="form-control" placeholder="address" formControlName="AdminAddress" />
+        <div *ngIf="adminAdd.get('AdminAddress').invalid && adminAdd.get('AdminAddress').errors.required"
+        [ngClass]="{ 'error-message': adminAdd.get('AdminAddress').touched }">
+        Address is required.
+        </div>
+        <br />
+        <label for="AdminLevel">User Type</label>
+        <select class="form-control" formControlName="AdminLevelId">
+            <option *ngFor="let custt of adminLevels" value="{{ custt.AdminLevelId }}">
+                {{ custt.AdminLevelName }}
+            </option>
+        </select>
+
+        <label for="AdminPhoto">Photo:</label>
+        <div class="col-md-12">
+            <div class="form-group row">
+                <div class="col-auto">
+                    <kendo-upload
+                        class="selector"
+                        name="image"
+                        formControlName="AdminPhoto"
+                        (upload)="onUpload($event)"
+                        (success)="onSuccess($event)"
+                        (remove)="onRemove($event)"
+                        [autoUpload]="true"
+                        [multiple]="true"
+                        [concurrent]="false"
+                        [saveUrl]="saveUrl"
+                        [removeUrl]="removeUrl"
+                    >
+                    </kendo-upload>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <button type="button" (click)="goBack()">go back</button> &nbsp;&nbsp;
+    <button type="button" (click)="submitAdmin($event)">Submit</button>
+</form>

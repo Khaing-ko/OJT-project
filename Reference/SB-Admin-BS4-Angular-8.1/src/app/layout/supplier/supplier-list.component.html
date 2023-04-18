@@ -1,0 +1,29 @@
+<h2>Supplier Lists</h2>
+<app-supplier-search></app-supplier-search>
+<kendo-grid [data]="suppliergrid" 
+  [pageSize]="gridState.take"
+  [skip]="gridState.skip"
+  [sort]="gridState.sort"
+  [filter]="gridState.filter" 
+  [sortable]="true"  
+  [pageable]="true"
+  [resizable]="true" 
+  [filterable]="true" 
+  [height]="410"
+  (dataStateChange)="onStateChange($event)" >
+  <kendo-grid-column field="SupplierId" title="ID" [width]=40 filter="numeric"></kendo-grid-column>
+  <kendo-grid-column field="SupplierName" title="Name" [width]=40></kendo-grid-column>
+  <kendo-grid-column field="SupplierAddress" title="Address" [width]=40></kendo-grid-column>
+  <kendo-grid-column field="SupplierTypeId" title="SupplierType" [width]=40></kendo-grid-column>
+  <kendo-grid-column title="Actions" width="120">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <button kendoButton [look]="'default'" iconClass="fa fa-remove fa-fw" (click)="delete(dataItem)"></button>
+      <button kendoButton [look]="'default'" iconClass="fa fa-edit fa-fw" routerLink="supplier-details/{{dataItem.SupplierId}}"></button>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>
+<br />
+<a [routerLink]="['supplier-add']" style="text-decoration: none">
+    <i class="fa fa-plus"></i>&nbsp;
+    <span>{{ 'Add New Supplier' }}</span>
+</a>

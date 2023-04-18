@@ -1,0 +1,111 @@
+<kendo-dialog *ngIf="active" [width]="300" [height]="500" (close)="closeForm()">
+    <kendo-dialog-titlebar>
+        {{ isNew ? 'Add new customer' : 'Edit customer' }}
+    </kendo-dialog-titlebar>
+
+    <form [formGroup]="customerformGroup" #formDir="ngForm">
+        <div>
+            <label for="CustomerName">customer Name:</label>
+            <input class="form-control" placeholder="customer name" formControlName="CustomerName" />
+            <div
+                *ngIf="
+                    customerformGroup.get('CustomerName').invalid &&
+                    customerformGroup.get('CustomerName').errors.required
+                "
+            >
+                customer Name is required.
+            </div>
+            <div
+                *ngIf="
+                    customerformGroup.get('CustomerName').invalid &&
+                    customerformGroup.get('CustomerName').errors.maxlength
+                "
+            >
+                customer Name must be maximum 20 characters long.
+            </div>
+            <div
+                *ngIf="
+                    customerformGroup.get('CustomerName').invalid &&
+                    customerformGroup.get('CustomerName').errors.minlength
+                "
+            >
+                customer Name must be minimum 5 characters long.
+            </div>
+            <br />
+            <label for="RegisterDate">Register Date:</label>
+            <kendo-datepicker
+                class="form-control"
+                formControlName="RegisterDate"
+                format="dd/MM/yyyy"
+            ></kendo-datepicker>
+            <br />
+            <label for="CustomerAddress">Address:</label>
+            <input class="form-control" placeholder="address" formControlName="CustomerAddress" />
+            <br />
+            <label for="CustomerTypeId">Customer Type: </label>
+            <kendo-dropdownlist
+                [defaultItem]="{ CustomerTypeId: null, CustomerTypeName: '' }"
+                [data]="customertypes"
+                textField="CustomerTypeName"
+                valueField="CustomerTypeId"
+                [valuePrimitive]="true"
+                formControlName="CustomerTypeId"
+            >
+            </kendo-dropdownlist>
+        </div>
+        <br />
+        <label
+            >Photo:</label>
+            <div class="col-md-12">
+                <div *ngIf="previewimage" class="img-preview example-config">
+                    <div *ngFor="let image of previewimage | keyvalue">
+                        <img
+                            [src]="image.value"
+                            [alt]="image.key"
+                            width="200px"
+                            data-max-size="10kb"
+                            class="img-fluid rounded"
+                        />
+                        <button
+                            kendoButton
+                            (click)="deleteImageHandler($event, image.key)"
+                            iconClass="fa fa-remove fa-fw"
+                        ></button>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-auto">
+                        <kendo-upload
+                            class="selector"
+                            name="image"
+                            formControlName="CustomerPhoto"
+                            (upload)="onUpload($event)"
+                            (success)="onSuccess($event)"
+                            (remove)="onRemove($event)"
+                            [autoUpload]="true"
+                            [multiple]="true"
+                            [concurrent]="false"
+                            [saveUrl]="saveUrl"
+                            [removeUrl]="removeUrl"
+                        >
+                        </kendo-upload>
+                    </div>
+                </div>
+            </div>
+       
+        <br />
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onCancel($event)">Cancel</button>
+        <button class="k-button k-primary" [disabled]="!customerformGroup.valid" (click)="onSave($event)">Save</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Please confirm" *ngIf="photoToRemove" (close)="confirmPhotoRemove(false)">
+    <p style="margin: 30px; text-align: center;">Are you sure you want to delete customer photo {{ photoToRemove }}?</p>
+    <kendo-dialog-actions>
+        <button class='k-button' (click)="confirmPhotoRemove(false)">No</button>
+        <button class='k-button k-primary' (click)="confirmPhotoRemove(true)" primary="true">Yes</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>

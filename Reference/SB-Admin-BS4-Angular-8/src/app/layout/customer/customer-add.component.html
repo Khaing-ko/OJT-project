@@ -1,0 +1,17 @@
+<h2>Add New Customer</h2>
+<form [formGroup]="customerAdd" (ngSubmit)="submitCustomer()" #formDir="ngForm">
+  <div>
+    <label for="CustomerName">Customer Name:</label>
+    <input class="form-control" placeholder="hero name" formControlName="CustomerName" />
+  
+    <br/>
+    <label for="CustomerAddress">Customer Address:</label>
+    <input class="form-control" placeholder="address" formControlName="CustomerAddress"/>
+    <br/>
+    <label for="CustomerTypeId">CustomerTypeId: </label>
+    <input class="form-control" placeholder="CustomerTypeId" formControlName="CustomerTypeId"/>    
+  </div>
+  <br/>
+  <button type="button" (click)="goBack()">go back</button> &nbsp;&nbsp;
+  <button type="button" (click)="submitCustomer()">Submit</button>
+</form>

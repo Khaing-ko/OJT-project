@@ -1,0 +1,40 @@
+<h2>TodoItem Lists</h2>
+<ul class="items">
+  <li *ngFor="let item of items">
+    <a routerLink="/item-detail/{{item.Id}}">
+        <span class="badge">{{item.Id}}</span> {{item.Name}}
+      </a>
+      <button
+      type="button"
+      class="delete"
+      title="delete item"
+      (click)="delete(item)"
+    >
+      X
+    </button>
+  </li>
+</ul>
+<div>
+  <h3>Search Hero</h3>
+  <label for="item-list">item name: </label>
+  <input id="item-list" #itemname />
+
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button type="button" class="add-button" (click)="search(itemname.value)">
+    Search item
+  </button>
+</div>
+<div>
+  <h2>Add new item</h2>
+  <label for="new-item">item name: </label>
+  <input id="new-item" #itemName />
+
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button
+    type="button"
+    class="add-button"
+    (click)="add(itemName.value); itemName.value = ''"
+  >
+    Add item
+  </button>
+</div>

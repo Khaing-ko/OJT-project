@@ -1,0 +1,48 @@
+<!-- <div *ngIf="customer">
+    <h2>{{ customer.CustomerName | uppercase }} Details</h2>
+    <div><span>Id: </span>{{ customer.CustomerId }}</div>
+    <div>        
+        <label for="customer-name">Customer name: </label>
+        <input Id="customer-name" [(ngModel)]="customer.CustomerName" class="form-control" placeholder="Customer name" />
+        <br>
+        <label for="customer-name">Address: </label>
+        <input Id="customer-name" [(ngModel)]="customer.CustomerAddress" class="form-control" placeholder="Customer name" />
+    </div>
+    <button type="button" (click)="goBack()">go back</button> &nbsp;&nbsp;
+    <button type="button" (click)="save()">Save</button>
+</div> -->
+
+Customer View
+
+<div *ngIf="customerEdit.value">
+    <h2>{{ customerEdit.value.CustomerName | uppercase }} Details</h2>
+    <div><span>Customer ID : </span>{{ customerEdit.value.CustomerId }}</div>
+    <br />
+    <form [formGroup]="customerEdit" (ngSubmit)="saveCustomer()">
+        <div>
+            <label for="CustomerName">Name</label>
+            <input class="form-control" placeholder="name" formControlName="CustomerName" />
+            <br />
+            <label for="CustomerAddress">Address</label>
+            <input class="form-control" placeholder="address" formControlName="CustomerAddress" />
+            <br />
+            <!-- <label for="CustomerTypeId">CustomerTypeId</label>
+            <input class="form-control" placeholder="CustomerTypeId" formControlName="CustomerTypeId" /> -->
+            <label for="CustomerType">Customer Type</label>
+        <select class="form-control" formControlName="CustomerTypeId">
+            <option *ngFor="let custt of customertypes" value={{custt.CustomerTypeId}}>{{custt.CustomerTypeName}}</option>
+        </select>
+            <br />
+            <label for="RegisterDate">Register Date</label>
+            <input class="form-control" placeholder="registerDate" formControlName="RegisterDate" />
+            <br />
+            <br />
+            <label for="CustomerPhoto">CustomerPhoto</label>
+            <input class="form-control" placeholder="CustomerPhoto" formControlName="CustomerPhoto" />
+            <br />
+        </div>
+        <br />
+        <button type="button" (click)="goBack()">go back</button> &nbsp;
+        <button type="submit">Submit</button>
+    </form>
+</div>

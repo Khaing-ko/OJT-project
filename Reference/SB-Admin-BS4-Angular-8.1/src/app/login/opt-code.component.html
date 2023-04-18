@@ -1,0 +1,126 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Reset Password</h4>
+                </div>
+                <div class="card-body">
+                    <form #forgotPasswordForm="ngForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="loginName">Username:</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="loginName"
+                                name="loginName"
+                                [(ngModel)]="otpData.loginName"
+                                required
+                                #loginName="ngModel"
+                            />
+                            <div
+                                *ngIf="loginName.invalid && (loginName.dirty || loginName.touched)"
+                                class="alert alert-danger"
+                            >
+                                <div *ngIf="loginName.errors.required">User Name is required.</div>
+                                <div *ngIf="loginName.errors.minlength">
+                                    User Name must be at least 5 characters long.
+                                </div>
+                                <div *ngIf="loginName.errors.maxlength">
+                                    User Name must be at max 20 characters long
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                name="email"
+                                [(ngModel)]="otpData.email"
+                                required
+                                #email="ngModel"
+                            />
+                            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                                <div *ngIf="email.errors.email">Invalid Email Address.</div>
+                                <div *ngIf="email.errors.required">email is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                name="password"
+                                [(ngModel)]="otpData.password"
+                                required
+                                #password="ngModel"
+                            />
+                            <div
+                                *ngIf="password.invalid && (password.dirty || password.touched)"
+                                class="alert alert-danger"
+                            >
+                                <div *ngIf="password.errors.required">Password is required.</div>
+                                <div *ngIf="password.errors.minlength">
+                                    Password must be at least 5 characters long.
+                                </div>
+                                <div *ngIf="password.errors.maxlength">
+                                    Password must be at max 20 characters long.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">ConfirmPassword:</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                [(ngModel)]="otpData.confirmPassword"
+                                required
+                                #confirmPassword="ngModel"
+                            />
+                            <div
+                                *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+                                class="alert alert-danger"
+                            >
+                                <div *ngIf="confirmPassword.errors.required">Confirm password is required.</div>
+                                <div *ngIf="otpData.password !== otpData.confirmPassword">Passwords do not match.</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="otpPasscode">OtpPasscode:</label>
+                            <input
+                                type="otpPasscode"
+                                class="form-control"
+                                id="otpPasscode"
+                                name="otpPasscode"
+                                [(ngModel)]="otpData.otpPasscode"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="otpPrefix">OtpPrefix:</label>
+                            <input
+                                type="otpPrefix"
+                                class="form-control"
+                                id="otpPrefix"
+                                name="otpPrefix"
+                                [(ngModel)]="otpData.otpPrefix"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </div>
+                        <div *ngIf="errorMessage" class="alert alert-danger">
+                            {{ errorMessage }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

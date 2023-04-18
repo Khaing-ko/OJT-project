@@ -1,0 +1,21 @@
+<h2>My Heroes</h2>
+<app-test-hero-search></app-test-hero-search>
+
+<ul class="heroes">
+    <li *ngFor="let hero of heroes">
+        <a routerLink="test-hero-details/{{ hero.Id }}">
+            <span class="badge">{{ hero.Id }}</span> {{ hero.Name }}
+        </a>
+        <button type="button" class="delete" title="delete hero" (click)="delete(hero)">X</button>
+    </li>
+</ul>
+<a routerLink="test-hero-add">Add New Customer</a>
+<kendo-upload
+  [saveUrl]="saveUrl"
+  [removeUrl]="removeUrl"
+  [autoUpload]="false"
+  [multiple]="true"
+  [restrictions]="restrictions"
+  (remove)="onRemove($event)"
+  (upload)="onUpload($event)">
+</kendo-upload>

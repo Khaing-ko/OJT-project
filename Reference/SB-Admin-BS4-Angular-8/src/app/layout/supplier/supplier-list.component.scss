@@ -1,0 +1,64 @@
+.suppliers {
+    margin: 2em 0 2em 0;
+    list-style-type: none;
+    padding: 0;
+    width: 15em;
+  }
+  
+  .suppliers li {
+    display: flex;
+    background-color: #EEE;
+    margin: 0 0 .5em 0;
+    position: relative;
+    align-items: center;
+  }
+  
+  .suppliers button {
+    flex: 1;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    background-color: #EEE;
+    padding: 0;
+    border-radius: 4px; 
+    align-items: stretch;
+    height: 3em;
+    width: 3em;
+  }
+  
+  .suppliers button:hover {
+    color: #2c3a41;
+    background-color: #e6e6e6;
+    left: .1em;
+  }
+  
+  .suppliers button:active {
+    background-color: #525252;
+    color: #fafafa;
+  }
+  
+  .suppliers button.selected {
+    background-color: black;
+    color: white;
+  }
+  
+  .suppliers button.selected:hover {
+    background-color: #505050;
+    color: white;
+  }
+  
+  .suppliers button.selected:active {
+    background-color: black;
+    color: white;
+  }
+  
+  .suppliers .badge {
+    display: inline-block;
+    font-size: small;
+    color: white;
+    padding: 1em 1em 1em 1em;
+    background-color: #405061;
+    line-height: 1em;
+    margin-right: .8em;
+    border-radius: 4px 0 0 4px;
+  }

@@ -1,0 +1,86 @@
+<div *ngIf="adminEdit.value">
+    <h2>{{ adminEdit.value.AdminName | uppercase }} Details</h2>
+    <div><span>User ID : </span>{{ adminEdit.value.AdminId }}</div>
+    <br />
+    <form [formGroup]="adminEdit" #formDir="ngForm" (ngSubmit)="saveAdmin()">
+        <div>
+            <label for="AdminName">Name</label>
+            <input class="form-control" placeholder="name" formControlName="AdminName" />
+            <br />
+            <label for="AdminLevelId">User Type: </label>
+            <kendo-dropdownlist
+                [data]="adminlevel"
+                textField="AdminLevelName"
+                valueField="AdminLevelId"
+                [valuePrimitive]="true"
+                formControlName="AdminLevelId"
+            >
+            </kendo-dropdownlist>
+            <br />
+            <br/>
+            <label for="AdminLoginName">User Name</label>
+            <input class="form-control" placeholder="user name" formControlName="AdminLoginName" />
+            <br />
+            <label for="AdminEmail">Email</label>
+            <input class="form-control" placeholder="Email" formControlName="AdminEmail" />
+            <br />
+            <label>Photo:</label>
+            <div class="col-md-12">
+                <div *ngIf="previewimage" class="img-preview example-config">
+                    <div *ngFor="let image of previewimage | keyvalue">
+                        <img
+                            [src]="image.value"
+                            [alt]="image.key"
+                            width="200px"
+                            data-max-size="10kb"
+                            class="img-fluid rounded"
+                        />
+                        <button
+                            kendoButton
+                            (click)="deleteImageHandler($event, image.key)"
+                            iconClass="fa fa-remove fa-fw"
+                        ></button>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-auto">
+                        <kendo-upload
+                            class="selector"
+                            name="image"
+                            formControlName="AdminPhoto"
+                            (upload)="onUpload($event)"
+                            (success)="onSuccess($event)"
+                            (remove)="onRemove($event)"
+                            [autoUpload]="true"
+                            [multiple]="true"
+                            [concurrent]="false"
+                            [saveUrl]="saveUrl"
+                            [removeUrl]="removeUrl"
+                        >
+                        </kendo-upload>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <kendo-label for="AdminStatus" text="User Status : " >
+                <kendo-switch
+                  [(ngModel)]="checked"
+                  onLabel="ON"
+                  offLabel="OFF"
+                  formControlName="AdminStatus"
+                ></kendo-switch>
+              </kendo-label>
+        </div>
+        <br />
+        <button type="button" (click)="goBack()">go back</button> &nbsp;
+        <button type="submit" (click)="onSave($event)">Submit</button>
+    </form>
+</div>
+
+<kendo-dialog title="Please confirm" *ngIf="photoToRemove" (close)="confirmPhotoRemove(false)">
+    <p style="margin: 30px; text-align: center">Are you sure you want to delete customer photo {{ photoToRemove }}?</p>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="confirmPhotoRemove(false)">No</button>
+        <button class="k-button k-primary" (click)="confirmPhotoRemove(true)" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
